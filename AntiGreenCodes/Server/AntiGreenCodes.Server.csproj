@@ -22,5 +22,9 @@
     <ProjectReference Include="..\Shared\AntiGreenCodes.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 
 </Project>

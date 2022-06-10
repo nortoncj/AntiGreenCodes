@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AntiGreenCodes.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220609234327_ProductSeeding")]
-    partial class ProductSeeding
+    [Migration("20220610133127_CreateInitial")]
+    partial class CreateInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,47 @@ namespace AntiGreenCodes.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("AntiGreenCodes.Shared.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Rare",
+                            Url = "rare"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Pokemon Go",
+                            Url = "pokemon-go"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sword & Shield",
+                            Url = "sword-and-shield"
+                        });
+                });
+
             modelBuilder.Entity("AntiGreenCodes.Shared.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -30,6 +71,9 @@ namespace AntiGreenCodes.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -48,12 +92,15 @@ namespace AntiGreenCodes.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Description = "Pokemon Promo Single Charizard Oversized Card #4/102. Card measures approximately 8x6",
                             ImageUrl = "https://imgs.search.brave.com/tm0MvvNfuLuBiczH_exNEcVJy3gUpfXugRk1NMoGAbE/rs:fit:500:687:1/g:ce/aHR0cHM6Ly93d3cu/c2VsbDJiYm5vdmVs/dGllcy5jb20vbW01/L3Bva2Vtb24vUEtf/QjJfaDQuanBn",
                             Price = 300.00m,
@@ -62,6 +109,7 @@ namespace AntiGreenCodes.Server.Migrations
                         new
                         {
                             Id = 2,
+                            CategoryId = 3,
                             Description = "Pokemon Sword & Shield Base Set Rare Holo Cinderace",
                             ImageUrl = "https://imgs.search.brave.com/zu3PB4vXaoR4oOiIa6w_uTcSy9e8x3Ek-hpjTLSBNFQ/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9jZG4x/MS5iaWdjb21tZXJj/ZS5jb20vcy0wa3Z2/OS9pbWFnZXMvc3Rl/bmNpbC8xOTIwdy9w/cm9kdWN0cy8zMjEy/MjMvNDY0MTU4L3Bv/a2Vtb25zd29yZDI2/c2hpZWxkMDM1X182/MjU2OC4xNTgwNzY3/MzI5LmpwZz9jPTI",
                             Price = 500.00m,
@@ -70,11 +118,23 @@ namespace AntiGreenCodes.Server.Migrations
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Description = "Pokemon Promo Single Mew Card",
                             ImageUrl = "https://imgs.search.brave.com/BUKX4p_Xu2peOCKs4Ehj_CeFHptCai02zhPu-Tj3TWM/rs:fit:1000:1200:1/g:ce/aHR0cHM6Ly9pNS53/YWxtYXJ0aW1hZ2Vz/LmNvbS9hc3IvY2M0/ZDQ3Y2QtMWIwMi00/Yzg4LWJhNWEtMjVj/MjBkMWVkNzdiXzEu/YzZlOGFkZTA4ODgw/YmMyOTVhY2E1Y2Q2/ZDc1N2Q0NzUuanBl/Zw",
                             Price = 700.00m,
                             Title = "Mew"
                         });
+                });
+
+            modelBuilder.Entity("AntiGreenCodes.Shared.Product", b =>
+                {
+                    b.HasOne("AntiGreenCodes.Shared.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

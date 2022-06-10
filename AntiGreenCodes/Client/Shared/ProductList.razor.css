@@ -1,11 +1,4 @@
-﻿.media{
-    display:flex;
-    align-items:flex-start;
-}
-
-.media-body {
-    flex:1;
-}
+﻿
 .media-img {
     max-height: 200px;
     max-width: 200px;
@@ -23,9 +16,7 @@
     text-align: center;
 }
 
-.price {
-    color:green;
-}
+
 
 @media(max-width: 1023.98px){
     .media {

@@ -1,6 +1,8 @@
 global using AntiGreenCodes.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using AntiGreenCodes.Server.Data;
+global using AntiGreenCodes.Server.Services.ProductService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer(); //configures API
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
