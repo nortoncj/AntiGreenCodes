@@ -3,7 +3,12 @@
 
 @if(ProductService.Products == null || ProductService.Products.Count == 0)
 {
-    <span>Loading Products...</span>
+    <div class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only"></span>
+  </div>
+</div>
+    
 }
 
 <ul class="list-unstyled">
@@ -20,7 +25,7 @@
                     <strong><h4 class="mb-0">@product.Title</h4></strong>
                 </a>
                 <p>@product.Description</p>
-                <h5 class="price"> $@product.Price</h5>
+                <h5 class="price"> $200.00</h5>
             </div>
         </li>
     }
